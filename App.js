@@ -10,7 +10,7 @@ import {
    TouchableOpacity } from 'react-native';
 import io from 'socket.io-client';
 
-const socket = io('http://50a4-168-227-74-92.ngrok.io'); // replace with the IP of your server, when testing on real devices
+const socket = io('https://chat-tts-service.herokuapp.com/'); // replace with the IP of your server, when testing on real devices
 
 export default class App extends Component {
   constructor(props) {
@@ -31,7 +31,6 @@ export default class App extends Component {
     socket.on('message', msg => {
       this.message_state.chatMessages.push(msg)
       this.updateChat()
-      console.log(this.message_state.chatMessages)
     });
   }
 
@@ -83,7 +82,7 @@ export default class App extends Component {
     <Text onValueChange = {{}} style={{ padding: 10, fontSize: 24}} key={chatMessage}>{chatMessage}</Text>)
     return (
       <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'transparent'}/>
       <SafeAreaView style={styles.container}>
         <ScrollView>
             {chatMessages} 
