@@ -1,32 +1,38 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar, SafeAreaView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { 
+   StyleSheet,
+   Text, 
+   View, 
+   StatusBar, 
+   SafeAreaView, 
+   ScrollView, 
+   TextInput, 
+   TouchableOpacity } from 'react-native';
 import io from 'socket.io-client';
 
-const socket = io("http://cdfc-168-227-74-92.ngrok.io"); // replace with the IP of your server, when testing on real devices
-
-
+const socket = io('http://50a4-168-227-74-92.ngrok.io'); // replace with the IP of your server, when testing on real devices
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.typing = {
-      chatMessage: "placeholder"
+    this.message_state = {
+      chatMessage: "",
+      chatMessages: []
     },
     this.state = {
       connected: socket.connected,
       currentTransport: socket.connected ? socket.io.engine.transport.name : '-',
       lastMessage: ""
     };
-    var messages = [...messages, message];
-    var message = {
-      name: "",
-      message: ""
-    };
-    var textbox = ""
   }
 
   componentDidMount() {
     socket.on('connection', () => this.onConnectionStateUpdate());
+    socket.on('message', msg => {
+      this.message_state.chatMessages.push(msg)
+      this.updateChat()
+      console.log(this.message_state.chatMessages)
+    });
   }
 
   componentWillUnmount() {
@@ -47,10 +53,6 @@ export default class App extends Component {
     }
   }
 
-  chatmessageUpdate (){
-
-  }
-
   onMessage(content) {
     this.setState({
       lastMessage: content
@@ -63,23 +65,28 @@ export default class App extends Component {
     });
   }
 
-  handlechange(event){
-    this.setState(textbox = event.target)
+  updateChat(){
+    this.setState(this.message_state.chatMessages)
   }
+
   sendMessage(data){
-    console.log(data)
     socket.emit('message', data)
   }
 
+  
+
   render() {
+
+
+
+    const chatMessages = this.message_state.chatMessages.map(chatMessage => 
+    <Text onValueChange = {{}} style={{ padding: 10, fontSize: 24}} key={chatMessage}>{chatMessage}</Text>)
     return (
       <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          ref={ref => scrollView = ref}
-          onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}>
-          {this.messages?.map((message, index) => <Text style={{ padding: 10, fontSize: 24, backgroundColor: index % 2 ? '#ddd' : '#fff' }} key={message.name} >{message.name} diz: {message.msg}</Text>)}
+        <ScrollView>
+            {chatMessages} 
         </ScrollView>
         <View style={styles.bottomView}>
           <TextInput
@@ -103,6 +110,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative'
   },
 
   bottomView: {
@@ -117,10 +125,12 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 0.5,
     padding: 10,
+    borderRadius: 10
   },
 
   btn: {
     flex: 1,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#204cfa'
@@ -128,6 +138,13 @@ const styles = StyleSheet.create({
 
   btnTxt: {
     color: '#fff'
-  }
+  },
+
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
