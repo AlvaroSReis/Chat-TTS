@@ -1,108 +1,26 @@
 import React, { Component } from 'react';
-import { 
-   StyleSheet,
-   Text, 
-   View, 
-   StatusBar, 
-   SafeAreaView, 
-   ScrollView, 
-   TextInput, 
-   TouchableOpacity } from 'react-native';
-import io from 'socket.io-client';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer, createStackNavigator} from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler'
 
-const socket = io('https://chat-tts-service.herokuapp.com/'); // replace with the IP of your server, when testing on real devices
+import Chat from './screens/chat.js'
+import Login from "./screens/login.js"
+
+const Drawer = createDrawerNavigator();
+
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.message_state = {
-      chatMessage: "",
-      chatMessages: []
-    },
-    this.state = {
-      connected: socket.connected,
-      currentTransport: socket.connected ? socket.io.engine.transport.name : '-',
-      lastMessage: ""
-    };
-  }
-
-  componentDidMount() {
-    socket.on('connection', () => this.onConnectionStateUpdate());
-    socket.on('message', msg => {
-      this.message_state.chatMessages.push(msg)
-      this.updateChat()
-    });
-  }
-
-  componentWillUnmount() {
-    socket.off('connect');
-    socket.off('disconnect');
-    socket.off('message');
-  }
-
-  onConnectionStateUpdate() {
-    this.setState({
-      connected: socket.connected,
-      currentTransport: socket.connected ? socket.io.engine.transport.name : '-'
-    });
-    if (socket.connected) {
-      socket.io.engine.on('upgrade', () => this.onUpgrade());
-    } else {
-      socket.io.engine.off('upgrade');
-    }
-  }
-
-  onMessage(content) {
-    this.setState({
-      lastMessage: content
-    });
-  }
-
-  onUpgrade() {
-    this.setState({
-      currentTransport: socket.io.engine.transport.name
-    });
-  }
-
-  updateChat(){
-    this.setState(this.message_state.chatMessages)
-  }
-
-  sendMessage(data){
-    socket.emit('message', data)
-  }
-
-  
 
   render() {
-
-
-
-    const chatMessages = this.message_state.chatMessages.map(chatMessage => 
-    <Text onValueChange = {{}} style={{ padding: 10, fontSize: 24}} key={chatMessage}>{chatMessage}</Text>)
     return (
-      <>
-      <StatusBar barStyle="dark-content" backgroundColor={'transparent'}/>
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-            {chatMessages} 
-        </ScrollView>
-        <View style={styles.bottomView}>
-          <TextInput
-            style={styles.txtInput}
-            placeholder = "Digite..."
-            onChangeText={(text) => this.chatMessage = text}
-          />
-          <TouchableOpacity
-            onPress={() => this.sendMessage(this.chatMessage)}
-            style={styles.btn}
-          >
-            <Text style={styles.btnTxt}>Enviar</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </>
-    );
+      <NavigationContainer>
+        <Drawer.Navigator>
+          <Drawer.Screen name = "Login" component={Login} />
+          <Drawer.Screen name ="Chat" component={Chat} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    )
   }
 }
 

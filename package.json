@@ -17,7 +17,15 @@
     "react-test-renderer": "17.0.1",
     "react-native": "0.64.3",
     "react-native-web": "0.17.1",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "@react-navigation/core": "~6.0.0",
+    "@react-navigation/drawer": "~6.0.0",
+    "@react-navigation/native": "~6.0.0",
+    "@react-navigation/stack": "~6.0.0",
+    "react-native-gesture-handler": "~2.1.0",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "3.0.0",
+    "react-native-reanimated": "2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
