@@ -5,10 +5,12 @@ import {
   View,
   TextInput,
   TouchableOpacity
-} from 'react-native'
+} from 'react-native';
+
+//import auth from '../services/firebase.js'
 
 export default class Login extends Component {
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <View>
@@ -28,6 +30,7 @@ export default class Login extends Component {
           autoCorrect={false}
         />
         <TouchableOpacity
+          //onPress={() = }
           onPress={() => this.props.navigation.navigate('Chat')}
           style={styles.btn}
         >
@@ -74,10 +77,10 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: '#204cfa',
     height: 45,
-    marginBottom: 30,
+    marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 30,
+    borderRadius: 10,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -87,8 +90,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25
   },
   btnTxt: {
-      color: '#ffffff',
-      fontSize: 20
+    color: '#ffffff',
+    fontSize: 20
   }
 
 })

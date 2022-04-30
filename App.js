@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { NavigationContainer, createStackNavigator} from '@react-navigation/native';
+import { NavigationContainer} from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler'
 
 import Chat from './screens/chat.js'
 import Login from "./screens/login.js"
+
 
 const Drawer = createDrawerNavigator();
 
@@ -16,7 +17,7 @@ export default class App extends Component {
     return (
       <NavigationContainer>
         <Drawer.Navigator>
-          <Drawer.Screen name = "Login" component={Login} />
+          <Drawer.Screen name ="Login" component={Login} />
           <Drawer.Screen name ="Chat" component={Chat} />
         </Drawer.Navigator>
       </NavigationContainer>
