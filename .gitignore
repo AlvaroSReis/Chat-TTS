@@ -142,3 +142,4 @@ web-build/
 dist/
 
 # @end expo-cli
+.expo-shared/assets.json
